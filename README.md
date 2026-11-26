@@ -1,8 +1,8 @@
 # 🧭 OPSFORGE — AJO Journey Time Machine
 
-[![Quality Gate](https://github.com/sghatge/ajo-journey-time-machine/actions/workflows/ci.yml/badge.svg)](https://github.com/sghatge/ajo-journey-time-machine/actions/workflows/ci.yml) ![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white) ![Streamlit](https://img.shields.io/badge/UI-Streamlit-FF4B4B?logo=streamlit&logoColor=white) ![License](https://img.shields.io/badge/license-MIT-green)
+[![Quality Gate](https://github.com/sghatge/ajo-journey-time-machine/actions/workflows/ci.yml/badge.svg)](https://github.com/sghatge/ajo-journey-time-machine/actions/workflows/ci.yml) ![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white) ![Streamlit](https://img.shields.io/badge/UI-Streamlit-FF4B4B?logo=streamlit&logoColor=white) ![License](https://img.shields.io/badge/license-MIT-green) [![Release](https://img.shields.io/github/v/release/sghatge/ajo-journey-time-machine?display_name=tag)](https://github.com/sghatge/ajo-journey-time-machine/releases/tag/v0.1.0)
 
-🚀 **Live demo:** [ajo-journey-time-machine.streamlit.app](https://ajo-journey-time-machine.streamlit.app/) · **Source:** [GitHub repository](https://github.com/sghatge/ajo-journey-time-machine)
+🚀 **Live demo:** [ajo-journey-time-machine.streamlit.app](https://ajo-journey-time-machine.streamlit.app/) · **Project site:** [OPSFORGE](https://sghatge.github.io/ajo-journey-time-machine/) · **Release:** [v0.1.0](https://github.com/sghatge/ajo-journey-time-machine/releases/tag/v0.1.0) · **Source:** [GitHub repository](https://github.com/sghatge/ajo-journey-time-machine)
 
 **A deterministic, synthetic-data-first shadow simulator for customer journey orchestration.** Explore consent gates, opt-out handling, duplicate-event signals, projected actions, risk heuristics and hash-chained audit evidence through a polished Streamlit control room and a read-only MCP tool.
 
