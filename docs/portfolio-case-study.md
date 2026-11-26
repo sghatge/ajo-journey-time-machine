@@ -5,9 +5,10 @@
 **AJO Journey Time Machine** is a synthetic-data-first shadow simulator designed to demonstrate how customer journey orchestration can be pressure-tested before operational deployment. It combines a deterministic Python simulation core, a Streamlit control room, explainable risk heuristics, JSON evidence export and a read-only MCP interface.
 
 - **Live demo:** https://ajo-journey-time-machine.streamlit.app/
+- **Project site:** https://sghatge.github.io/ajo-journey-time-machine/
 - **Source code:** https://github.com/sghatge/ajo-journey-time-machine
 - **Category:** Enterprise AI assurance / MarTech governance / journey operations
-- **Status:** MVP v0.1.0 candidate
+- **Status:** Released — v0.1.0 ([release notes](https://github.com/sghatge/ajo-journey-time-machine/releases/tag/v0.1.0))
 
 ## Problem framing
 
