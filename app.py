@@ -82,12 +82,17 @@ st.markdown('<div class="kicker">02 / MISSION STATUS</div><h3>Simulation workspa
 
 if run:
     try:
+        baseline_events = parse_events(fixture())
+        baseline_result = simulate(baseline_events, seed=int(seed))
+        baseline_risk = assess_risk(baseline_result)
         events = parse_events(apply_scenario(scenario, fixture()))
         result = simulate(events, seed=int(seed))
         risk = assess_risk(result)
         entry = append_audit({"run_id":result.run_id,"risk":risk,"mode":"synthetic","scenario":scenario}, path=AUDIT)
         st.session_state["result"] = result.model_dump(mode="json")
         st.session_state["risk"] = risk
+        st.session_state["baseline_result"] = baseline_result.model_dump(mode="json")
+        st.session_state["baseline_risk"] = baseline_risk
         st.session_state["scenario"] = scenario
         st.session_state["audit"] = entry
         st.toast("Simulation completed and evidence recorded.", icon="✅")
@@ -96,38 +101,97 @@ if run:
 
 if "result" not in st.session_state:
     a,b=st.columns([1.3,1])
-    with a: st.markdown('<div class="panel"><div class="kicker">READY STATE</div><h4>Awaiting your first run</h4><p>Choose a scenario in the control panel and run the deterministic engine. The bundled fixture contains five synthetic profiles demonstrating fail-closed consent handling.</p></div>',unsafe_allow_html=True)
-    with b: st.markdown('<div class="panel"><div class="kicker">ASSURANCE DIMENSIONS</div><h4>What you can inspect</h4><p>Eligibility decisions · Projected channel actions · Risk classification · Hash-chain audit integrity</p></div>',unsafe_allow_html=True)
-    st.info("Start with **Baseline fixture**, then compare the consent and opt-out pressure tests.")
+    with a:
+        st.markdown('<div class="panel"><div class="kicker">READY STATE</div><h4>Awaiting your first run</h4><p>Choose a scenario and run the deterministic engine. Start with baseline, then pressure-test consent, opt-outs and duplicate events.</p></div>',unsafe_allow_html=True)
+    with b:
+        st.markdown('<div class="panel"><div class="kicker">ASSURANCE DIMENSIONS</div><h4>What you can inspect</h4><p>Journey flow · Baseline comparison · Risk intelligence · Profile traces · Hash-chain evidence</p></div>',unsafe_allow_html=True)
+    st.info("Run a scenario to unlock the journey map, impact comparison and explainable risk panel.")
 else:
-    result=st.session_state["result"]; risk=st.session_state["risk"]; entry=st.session_state["audit"]
+    result=st.session_state["result"]
+    risk=st.session_state["risk"]
+    baseline=st.session_state["baseline_result"]
+    baseline_risk=st.session_state["baseline_risk"]
+    entry=st.session_state["audit"]
     cols=st.columns(4)
     values=[("Profiles evaluated",risk["profiles_evaluated"],"Synthetic profiles"),("Eligible profiles",result["eligible_profiles"],"Passed eligibility gate"),("Excluded profiles",result["excluded_profiles"],"Fail-closed exclusions"),("Projected actions",risk["projected_actions"],"Not sent · Simulation only")]
     for col,(label,value,note) in zip(cols,values):
         with col: metric(label,str(value),note)
-    overview,paths,findings,evidence=st.tabs(["◈  Overview","⌁  Journey paths","⚑  Findings","⛓  Audit evidence"])
+
+    overview,journey,comparison,paths,findings,evidence=st.tabs(["◈ Overview","⌁ Journey map","⇄ Compare","◎ Profile traces","⚑ Risk intelligence","⛓ Evidence"])
     with overview:
         left,right=st.columns([1,1])
         with left:
-            st.markdown("#### Risk decision")
+            st.markdown("#### Current run decision")
             st.metric("Risk classification",risk["severity"],risk["decision"].replace("_"," ").title())
-            st.progress(float(risk["exclusion_rate"]),text=f'Exclusion rate · {risk["exclusion_rate"]:.1%}')
+            st.progress(float(risk["exclusion_rate"]),text=f'Excluded profiles · {risk["exclusion_rate"]:.1%}')
             st.caption(f'Scenario: {st.session_state["scenario"]} · Run ID: {result["run_id"]}')
         with right:
             st.markdown("#### Eligibility distribution")
             st.bar_chart({"Profiles":{"Eligible":result["eligible_profiles"],"Excluded":result["excluded_profiles"]}})
-        st.caption("Prototype heuristic based on synthetic exclusions and projected action volume; not an Adobe product control or production safety certification.")
+        st.caption("Risk is a transparent prototype heuristic based on synthetic exclusions and projected volume, not a calibrated probability or Adobe product control.")
+
+    with journey:
+        st.markdown("#### Journey decision architecture")
+        st.caption("Illustrative path used by this MVP. The diagram is explanatory; it is not a full executable AJO journey graph.")
+        dot = """
+        digraph Journey {
+          graph [bgcolor="transparent", rankdir=LR, pad="0.25", nodesep="0.55", ranksep="0.7"];
+          node [shape=box, style="rounded,filled", fontname="Arial", fontsize=11, color="#3b657c", fontcolor="#edf3ff", fillcolor="#142b43", margin="0.18,0.12"];
+          edge [color="#70d7e8", penwidth=1.8, arrowsize=0.8, fontname="Arial", fontsize=9, fontcolor="#a9c4d7"];
+          entry [label="EVENT\nENTRY", fillcolor="#183b52"];
+          consent [label="CONSENT\nGATE"];
+          email [label="EMAIL\nELIGIBLE", fillcolor="#17483f", color="#53b99a"];
+          exit [label="EXIT /\nSUPPRESSED", fillcolor="#49313a", color="#b97885"];
+          entry -> consent;
+          consent -> email [label="granted + active"];
+          consent -> exit [label="unknown / denied / opt-out"];
+          email -> exit [label="end"];
+        }
+        """
+        st.graphviz_chart(dot, use_container_width=True)
+        good,bad=st.columns(2)
+        with good:
+            st.markdown('<div class="panel"><h4>✓ Eligible path</h4><p>Event entry → consent gate → email step → exit. Only granted, non-opted-out synthetic profiles pass.</p></div>',unsafe_allow_html=True)
+        with bad:
+            st.markdown('<div class="panel"><h4>⊘ Suppression path</h4><p>Event entry → consent gate → exit. Pending, unknown, denied or opted-out profiles are excluded.</p></div>',unsafe_allow_html=True)
+
+    with comparison:
+        st.markdown("#### Scenario impact versus baseline")
+        st.caption("Both runs use the same synthetic fixture and seed. Only the selected scenario mutation changes.")
+        labels=["Eligible profiles","Excluded profiles","Projected actions"]
+        base_vals=[baseline["eligible_profiles"],baseline["excluded_profiles"],baseline["projected_actions"]]
+        test_vals=[result["eligible_profiles"],result["excluded_profiles"],result["projected_actions"]]
+        delta_cols=st.columns(3)
+        for col,label,bv,tv in zip(delta_cols,labels,base_vals,test_vals):
+            with col:
+                delta=tv-bv
+                st.metric(label,tv,delta=f"{delta:+d} vs baseline",delta_color="inverse" if label=="Excluded profiles" else "normal")
+        st.bar_chart({"Baseline":{k:v for k,v in zip(labels,base_vals)},"Selected scenario":{k:v for k,v in zip(labels,test_vals)}})
+        st.markdown("**Baseline risk:** "+baseline_risk["severity"]+"  ·  **Selected scenario risk:** "+risk["severity"])
+        st.caption("A scenario delta is an impact comparison on this small fixture, not a forecast of production campaign volume.")
+
     with paths:
         st.markdown("#### Profile-level trace explorer")
         for profile,path in result["profile_paths"].items():
             with st.expander(f'{profile}  ·  {" → ".join(path)}'):
                 st.code("  →  ".join(path))
                 st.caption("Simplified illustrative trace from the MVP simulator.")
+
     with findings:
-        st.markdown("#### Explainable engine findings")
+        st.markdown("#### Explainable risk intelligence")
+        severity=risk["severity"]
+        st.metric("Risk classification",severity)
+        st.progress(float(risk["exclusion_rate"]),text=f'Exclusion ratio · {risk["exclusion_rate"]:.1%}')
+        st.markdown("**Rules currently applied**")
+        st.markdown("- Any excluded profiles produce at least a MEDIUM classification.")
+        st.markdown("- Exclusion ratio at or above 25% produces HIGH classification.")
+        st.markdown("- Projected actions at or above 1,000 produce HIGH classification.")
+        st.caption("These thresholds are transparent demonstration heuristics. They are not statistically calibrated or compliance determinations.")
+        st.markdown("**Engine findings**")
         if risk["findings"]:
             for finding in risk["findings"]: st.warning(finding,icon="⚑")
         else: st.success("No findings raised for this synthetic run.")
+
     with evidence:
         st.markdown("#### Chain of custody")
         valid=verify_audit(path=AUDIT)
@@ -136,8 +200,8 @@ else:
         y.metric("Recorded at (UTC)",entry["timestamp"][:19].replace("T"," "))
         st.caption("Latest record SHA-256")
         st.code(entry["hash"])
-        report={"simulation":result,"risk":risk,"scenario":st.session_state["scenario"],"audit_record":entry,"audit_chain_valid":valid}
-        st.download_button("↓  Export run evidence (JSON)",json.dumps(report,indent=2),file_name=f'{result["run_id"]}-evidence.json',mime="application/json")
+        report={"simulation":result,"risk":risk,"baseline_simulation":baseline,"baseline_risk":baseline_risk,"scenario":st.session_state["scenario"],"audit_record":entry,"audit_chain_valid":valid}
+        st.download_button("↓ Export run evidence (JSON)",json.dumps(report,indent=2),file_name=f'{result["run_id"]}-evidence.json',mime="application/json")
 
 st.divider()
 st.markdown('<div class="kicker">GUARDRAILS / READ THIS FIRST</div>',unsafe_allow_html=True)
