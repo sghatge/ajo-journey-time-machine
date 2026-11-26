@@ -2,11 +2,13 @@
 
 [![Quality Gate](https://github.com/sghatge/ajo-journey-time-machine/actions/workflows/ci.yml/badge.svg)](https://github.com/sghatge/ajo-journey-time-machine/actions/workflows/ci.yml) ![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white) ![Streamlit](https://img.shields.io/badge/UI-Streamlit-FF4B4B?logo=streamlit&logoColor=white) ![License](https://img.shields.io/badge/license-MIT-green)
 
+🚀 **Live demo:** [ajo-journey-time-machine.streamlit.app](https://ajo-journey-time-machine.streamlit.app/) · **Source:** [GitHub repository](https://github.com/sghatge/ajo-journey-time-machine)
+
 **A deterministic, synthetic-data-first shadow simulator for customer journey orchestration.** Explore consent gates, opt-out handling, duplicate-event signals, projected actions, risk heuristics and hash-chained audit evidence through a polished Streamlit control room and a read-only MCP tool.
 
 > **Safety boundary:** This is an independent assurance prototype. It does not connect to Adobe Experience Platform (AEP) or Adobe Journey Optimizer (AJO), is not Adobe-certified, and cannot publish, pause, send or activate campaigns. Results are advisory and require human review.
 
-## Product experience
+## Live product\n\nOpen the hosted [Streamlit application](https://ajo-journey-time-machine.streamlit.app/) to explore the synthetic scenario lab. The public demo uses bundled synthetic events only; do not enter real customer or production data.\n\n## Product experience
 - **Control-room UI:** dark Streamlit workspace with scenario selection, run metrics, risk summary and exportable evidence.
 - **Scenario lab:** baseline, consent pressure, opt-out pressure and duplicate-event test scenarios.
 - **Deterministic engine:** repeatable evaluation of the bundled synthetic event fixture.
