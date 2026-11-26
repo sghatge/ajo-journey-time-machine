@@ -1,0 +1,17 @@
+name: consent-aware-demo
+version: 1
+entry: entry
+nodes:
+  - id: entry
+    kind: entry
+    next: [consent_check]
+  - id: consent_check
+    kind: condition
+    next: [email_step, exit]
+  - id: email_step
+    kind: channel
+    channel: email
+    requires_consent: true
+    next: [exit]
+  - id: exit
+    kind: exit
