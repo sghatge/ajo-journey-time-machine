@@ -11,7 +11,7 @@ requires-python = ">=3.11"
 license = { text = "MIT" }
 authors = [{ name = "Sangram Ghatge" }]
 dependencies = [
-    "mcp>=1.0,<2",
+    "mcp[cli]>=1.2.0,<2",
     "pydantic>=2.8,<3",
     "PyYAML>=6.0,<7",
     "streamlit>=1.40,<2",
