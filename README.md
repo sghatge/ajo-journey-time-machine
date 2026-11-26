@@ -8,6 +8,8 @@
 
 > **Safety boundary:** This is an independent assurance prototype. It does not connect to Adobe Experience Platform (AEP) or Adobe Journey Optimizer (AJO), is not Adobe-certified, and cannot publish, pause, send or activate campaigns. Results are advisory and require human review.
 
+![OPSFORGE AJO Journey Time Machine — synthetic journey assurance](docs/assets/hero-banner.svg)
+
 ## Live product\n\nOpen the hosted [Streamlit application](https://ajo-journey-time-machine.streamlit.app/) to explore the synthetic scenario lab. The public demo uses bundled synthetic events only; do not enter real customer or production data.\n\n## Product experience
 - **Control-room UI:** dark Streamlit workspace with scenario selection, run metrics, risk summary and exportable evidence.
 - **Scenario lab:** baseline, consent pressure, opt-out pressure and duplicate-event test scenarios.
@@ -64,6 +66,14 @@ This first release models a deliberately small subset of journey behavior. The Y
 - [ ] Explicit timezone and duplicate-event adversarial test coverage
 - [ ] Policy-as-code rules and versioned scenario packs
 - [ ] Signed, durable audit evidence and deployment hardening
+
+
+## Visual identity
+- Brand mark and favicon: [OPSFORGE mark](docs/assets/opsforge-mark.svg)
+- Journey flow icon: [Flow](docs/assets/icon-flow.svg)
+- Governance icon: [Shield](docs/assets/icon-shield.svg)
+- Audit evidence icon: [Audit](docs/assets/icon-audit.svg)
+- [Branded GitHub Pages site source](docs/index.html)
 
 ## License
 MIT — see `LICENSE`.
