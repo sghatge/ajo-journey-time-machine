@@ -8,7 +8,7 @@ from src.simulator import parse_events, simulate
 
 ROOT = Path(__file__).parent
 AUDIT = ROOT / "audit.jsonl"
-st.set_page_config(page_title="Journey Time Machine | OPSFORGE", page_icon="🧭", layout="wide")
+st.set_page_config(page_title="Journey Time Machine | OPSFORGE", page_icon="🧭", layout="wide", initial_sidebar_state="collapsed")
 
 st.markdown("""
 <style>
@@ -22,6 +22,8 @@ html,body,[class*="css"]{font-family:Manrope,sans-serif}
 .hero{border:1px solid #31536a;border-radius:22px;padding:1.7rem 1.9rem;background:linear-gradient(120deg,rgba(20,52,77,.85),rgba(16,27,45,.78));box-shadow:0 20px 70px #0004;margin-bottom:1.4rem}
 .hero h1{font-size:clamp(2.1rem,4vw,3.5rem);letter-spacing:-.055em;line-height:1.05;margin:.5rem 0;color:#f3f7ff}
 .hero p{color:#aabbd2;max-width:780px;line-height:1.7}
+.status-row{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:1rem}
+.pill{margin:0}
 .pill{display:inline-block;border:1px solid #3a7180;color:#9be9f1;border-radius:99px;padding:.32rem .7rem;font: .7rem 'DM Mono',monospace;letter-spacing:.08em;margin-right:.35rem}
 .metric{border:1px solid #2a3b52;border-radius:16px;padding:1rem 1.1rem;background:linear-gradient(145deg,#192a42,#0d1828);min-height:112px}
 .metric small{color:#9eafc7;text-transform:uppercase;letter-spacing:.1em}
@@ -33,6 +35,7 @@ div.stButton>button[kind="primary"]{background:linear-gradient(100deg,#62cddd,#7
 [data-testid="stMetric"]{background:#122039;border:1px solid #2a3b52;border-radius:14px;padding:1rem}
 .stTabs [data-baseweb="tab-list"]{gap:1rem;border-bottom:1px solid #2a3b52}
 .stTabs [aria-selected="true"]{color:#82deeb!important}
+@media(max-width:700px){.block-container{padding:1rem .85rem 2rem}.hero{padding:1.25rem 1.1rem;border-radius:17px;margin-bottom:1rem}.hero h1{font-size:2.25rem;line-height:1.05}.hero p{font-size:1rem;line-height:1.55}.eyebrow,.kicker{letter-spacing:.11em;font-size:.65rem}.metric{min-height:94px;padding:.8rem}.metric strong{font-size:1.65rem}.panel{padding:1rem;min-height:auto}.stTabs [data-baseweb="tab-list"]{gap:.35rem}.stTabs [data-baseweb="tab"]{padding:.45rem .55rem;font-size:.82rem}}
 </style>
 """, unsafe_allow_html=True)
 
@@ -56,18 +59,26 @@ def apply_scenario(name, rows):
 
 with st.sidebar:
     st.markdown('<div class="eyebrow">OPSFORGE / CONTROL ROOM</div>', unsafe_allow_html=True)
-    st.title("Simulation setup")
-    scenario = st.selectbox("Test scenario", ["Baseline fixture","Consent pressure test","Opt-out pressure test","Duplicate-event test"])
-    seed = st.number_input("Deterministic run seed", min_value=0, max_value=999999, value=42)
-    st.caption("Same fixture and seed produce the same simulation output.")
-    run = st.button("▶  Run simulation", type="primary", use_container_width=True)
+    st.title("About this lab")
+    st.caption("A synthetic-data-only shadow simulator for journey assurance.")
     st.divider()
     st.caption("ENGINE · DETERMINISTIC")
     st.caption("DATA · SYNTHETIC ONLY")
     st.caption("CONTROL · HUMAN APPROVAL")
+    st.info("Choose a scenario and run it from the main workspace. No campaigns are sent or changed.")
 
-st.markdown('<div class="hero"><div class="eyebrow">AUTONOMOUS JOURNEY ASSURANCE / LAB 01</div><h1>Journey Time Machine</h1><p>Pressure-test customer journey logic before it reaches a production workflow. Inspect consent decisions, projected actions, risk signals and tamper-evident run evidence — in a controlled synthetic environment.</p><span class="pill">● SHADOW MODE</span><span class="pill">SYNTHETIC DATA</span><span class="pill">HUMAN-IN-THE-LOOP</span></div>', unsafe_allow_html=True)
-st.markdown('<div class="kicker">01 / MISSION STATUS</div><h3>Simulation workspace</h3>', unsafe_allow_html=True)
+st.markdown('<div class="hero"><div class="eyebrow">AUTONOMOUS JOURNEY ASSURANCE / LAB 01</div><h1>Journey Time Machine</h1><p>Pressure-test customer journey logic before it reaches a production workflow. Inspect consent decisions, projected actions, risk signals and tamper-evident run evidence — in a controlled synthetic environment.</p><div class="status-row"><span class="pill">● SHADOW MODE</span><span class="pill">SYNTHETIC DATA</span><span class="pill">HUMAN-IN-THE-LOOP</span></div></div>', unsafe_allow_html=True)
+st.markdown('<div class="kicker">01 / RUN CONFIGURATION</div><h3>Configure your test</h3>', unsafe_allow_html=True)
+cfg1, cfg2, cfg3 = st.columns([2, 1, 1])
+with cfg1:
+    scenario = st.selectbox("Test scenario", ["Baseline fixture","Consent pressure test","Opt-out pressure test","Duplicate-event test"], key="main_scenario")
+with cfg2:
+    seed = st.number_input("Run seed", min_value=0, max_value=999999, value=42, key="main_seed")
+with cfg3:
+    st.markdown("<div style=\'height:1.85rem\'></div>", unsafe_allow_html=True)
+    run = st.button("▶  Run simulation", type="primary", use_container_width=True)
+st.caption("Repeatable synthetic tests · no production data · no campaign activation")
+st.markdown('<div class="kicker">02 / MISSION STATUS</div><h3>Simulation workspace</h3>', unsafe_allow_html=True)
 
 if run:
     try:
