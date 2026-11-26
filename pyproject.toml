@@ -1,0 +1,9 @@
+[project]
+name = "ajo-journey-time-machine"
+version = "0.1.0"
+description = "Deterministic synthetic journey simulator and governance prototype"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
