@@ -1,0 +1,7 @@
+[
+  {"event_id":"evt-001","profile_id":"profile-001","event_type":"cart_abandoned","occurred_at":"2026-11-26T08:00:00Z","consent":"granted","channel":"email","opted_out":false,"attributes":{"region":"EU","journey":"cart-recovery"}},
+  {"event_id":"evt-002","profile_id":"profile-002","event_type":"cart_abandoned","occurred_at":"2026-11-26T08:02:00Z","consent":"pending","channel":"email","opted_out":false,"attributes":{"region":"EU","journey":"cart-recovery"}},
+  {"event_id":"evt-003","profile_id":"profile-003","event_type":"purchase","occurred_at":"2026-11-26T08:03:00Z","consent":"denied","channel":"email","opted_out":false,"attributes":{"region":"APAC","journey":"cart-recovery"}},
+  {"event_id":"evt-004","profile_id":"profile-004","event_type":"cart_abandoned","occurred_at":"2026-11-26T08:04:00Z","consent":"granted","channel":"email","opted_out":true,"attributes":{"region":"NA","journey":"cart-recovery"}},
+  {"event_id":"evt-005","profile_id":"profile-005","event_type":"cart_abandoned","occurred_at":"2026-11-26T08:05:00Z","consent":"unknown","channel":"email","opted_out":false,"attributes":{"region":"EU","journey":"cart-recovery"}}
+]
