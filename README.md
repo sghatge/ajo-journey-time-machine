@@ -23,6 +23,7 @@
 ## Project documentation
 - [Architecture and data flow](docs/architecture.md)
 - [Portfolio case study](docs/portfolio-case-study.md)
+- [Journey graph validation](docs/journey-graph-validation.md)
 - [Changelog](CHANGELOG.md)
 - [v0.1.0 release notes](RELEASE_NOTES_v0.1.0.md)
 
@@ -56,13 +57,16 @@ Platform availability, limits and terms can change; verify current terms before 
 This first release models a deliberately small subset of journey behavior. The YAML journey file is illustrative and is not yet a full executable graph interpreter. The simulator is not a complete AJO emulator, does not reproduce all Adobe runtime semantics, and does not establish production safety. Risk is a transparent heuristic, not a calibrated probability. Audit files on ephemeral hosting are demo evidence only; use a secured append-only store for durable evidence.
 
 ## Roadmap
+
+**Current development:** v0.2.0 — structural journey graph validation is now available in the control room; executable branch evaluation remains future work.
 - [x] Synthetic fixture and deterministic simulation core
 - [x] Consent and opt-out fail-closed checks
 - [x] Risk summary and profile trace view
 - [x] Hash-chain audit evidence
 - [x] Streamlit scenario lab and JSON export
 - [x] GitHub Actions quality gate
-- [ ] Executable journey graph and branch validation
+- [x] Structural journey graph validation (v0.2.0 development)
+- [ ] Executable journey graph traversal and branch evaluation
 - [ ] Explicit timezone and duplicate-event adversarial test coverage
 - [ ] Policy-as-code rules and versioned scenario packs
 - [ ] Signed, durable audit evidence and deployment hardening
