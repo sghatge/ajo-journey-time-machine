@@ -2,9 +2,11 @@ from __future__ import annotations
 import json
 from pathlib import Path
 import streamlit as st
+import yaml
 from src.audit import append_audit, verify_audit
 from src.risk import assess_risk
 from src.simulator import parse_events, simulate
+from src.journey import validate_journey_graph
 
 ROOT = Path(__file__).parent
 AUDIT = ROOT / "audit.jsonl"
@@ -78,6 +80,20 @@ with cfg3:
     st.markdown("<div style=\'height:1.85rem\'></div>", unsafe_allow_html=True)
     run = st.button("▶  Run simulation", type="primary", use_container_width=True)
 st.caption("Repeatable synthetic tests · no production data · no campaign activation")
+try:
+    journey_definition = yaml.safe_load((ROOT / "config" / "journey.yaml").read_text(encoding="utf-8"))
+    graph_report = validate_journey_graph(journey_definition)
+    with st.expander("Journey graph structural validation", expanded=False):
+        if graph_report["valid"]:
+            st.success(f'Graph structure valid · {graph_report["node_count"]} nodes')
+        else:
+            st.error("Graph structure requires correction")
+        for issue in graph_report["errors"]:
+            st.write(f"• {issue}")
+        for warning in graph_report["warnings"]:
+            st.warning(warning)
+except Exception as exc:
+    st.error(f"Journey graph validation could not run: {exc}")
 st.markdown('<div class="kicker">02 / MISSION STATUS</div><h3>Simulation workspace</h3>', unsafe_allow_html=True)
 
 if run:
