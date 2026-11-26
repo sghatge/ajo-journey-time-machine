@@ -36,7 +36,31 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-Run tests with `python -m pytest -q`. Run the MCP server with `python -m src.mcp_server`.
+Run tests with `python -m pytest -q`. Run the MCP server with `python time_machine_mcp.py` (stdio), or install the package and run `ajo-time-machine-mcp`.
+
+## MCP server — Claude Desktop, Cursor and Glama
+
+The root-level `time_machine_mcp.py` exposes three local tools over standard input/output:
+- `run_synthetic_simulation` — runs the bundled synthetic fixture through the existing deterministic engine and records local demo evidence.
+- `validate_journey_definition` — checks YAML journey graph structure; it does not execute branches.
+- `verify_demonstration_audit` — verifies the local JSONL SHA-256 hash chain.
+
+Install with `pip install .` or `uv sync`. For a containerized stdio client, build with `docker build -t ajo-journey-time-machine-mcp .` and configure the client to launch `docker run -i --rm ajo-journey-time-machine-mcp`.
+
+Example Claude Desktop MCP configuration (adjust the absolute repository path):
+
+```json
+{
+  "mcpServers": {
+    "ajo-journey-time-machine": {
+      "command": "python",
+      "args": ["/absolute/path/to/ajo-journey-time-machine/time_machine_mcp.py"]
+    }
+  }
+}
+```
+
+This is a local stdio MCP server, not a hosted HTTP endpoint. It uses synthetic fixture data only. It does not parse SQL, connect to AEP/AJO, mint production authorization tokens, revoke agent sessions, pause live journeys, or execute rollback patches. Glama listing and indexing still require a separate submission and review.
 
 ## Deploy on Streamlit Community Cloud
 1. Push this repository to GitHub.
