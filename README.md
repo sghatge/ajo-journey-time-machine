@@ -18,6 +18,12 @@
 - **MCP surface:** read-only `run_synthetic_simulation` tool for local agent experimentation.
 - **Quality gate:** GitHub Actions runs pytest and Python compilation checks on pushes and pull requests.
 
+## Project documentation
+- [Architecture and data flow](docs/architecture.md)
+- [Portfolio case study](docs/portfolio-case-study.md)
+- [Changelog](CHANGELOG.md)
+- [v0.1.0 release notes](RELEASE_NOTES_v0.1.0.md)
+
 ## Quick start — Windows PowerShell
 ```powershell
 py -3.11 -m venv .venv
