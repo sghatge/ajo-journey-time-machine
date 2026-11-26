@@ -20,7 +20,7 @@ def test_valid_graph_passes():
 
 
 def test_missing_transition_target_fails():
-    graph = {**VALID, "nodes": [*VALID["nodes"][:-1], {"id": "email", "kind": "channel", "channel": "email", "next": ["missing"]}]}
+    graph = {**VALID, "nodes": [VALID["nodes"][0], {"id": "gate", "kind": "condition", "next": ["bad_email", "exit"]}, {"id": "bad_email", "kind": "channel", "channel": "email", "next": ["missing"]}, VALID["nodes"][3]]}
     report = validate_journey_graph(graph)
     assert report["valid"] is False
     assert any("does not exist: missing" in item for item in report["errors"])
