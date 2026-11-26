@@ -1,8 +1,31 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "ajo-journey-time-machine"
-version = "0.1.0"
-description = "Deterministic synthetic journey simulator and governance prototype"
+version = "0.2.0"
+description = "Synthetic journey simulator, structural graph validator and local MCP assurance tools"
+readme = "README.md"
 requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Sangram Ghatge" }]
+dependencies = [
+    "mcp>=1.0,<2",
+    "pydantic>=2.8,<3",
+    "PyYAML>=6.0,<7",
+    "streamlit>=1.40,<2",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<9"]
+
+[project.scripts]
+ajo-time-machine-mcp = "time_machine_mcp:main"
+
+[tool.setuptools]
+py-modules = ["time_machine_mcp"]
+packages = ["src"]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
