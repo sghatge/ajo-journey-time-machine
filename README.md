@@ -8,7 +8,7 @@
 
 > **Safety boundary:** This is an independent assurance prototype. It does not connect to Adobe Experience Platform (AEP) or Adobe Journey Optimizer (AJO), is not Adobe-certified, and cannot publish, pause, send or activate campaigns. Results are advisory and require human review.
 
-![OPSFORGE AJO Journey Time Machine — synthetic journey assurance](docs/assets/hero-banner.svg)
+<img src="assets/portfolio/repo-card.svg" width="520" alt="ajo-journey-time-machine bespoke project visual">
 
 ## Live product
 
